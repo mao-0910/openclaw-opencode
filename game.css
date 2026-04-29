@@ -425,6 +425,61 @@ body {
 }
 
 
+/* === Skin Select === */
+.skin-select {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.skin-title {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.skin-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.skin-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 3px solid var(--color-glass-border);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    position: relative;
+}
+
+.skin-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--color-text-muted);
+}
+
+.skin-btn.active {
+    border-color: var(--color-text);
+    box-shadow: 0 0 15px var(--color-primary-glow);
+}
+
+.skin-btn.classic {
+    background: linear-gradient(135deg, #00ff88, #009955);
+}
+
+.skin-btn.rainbow {
+    background: linear-gradient(135deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff);
+}
+
+.skin-btn.neonPurple {
+    background: linear-gradient(135deg, #c800ff, #6400c8);
+}
+
+
 .mode-btn {
     padding: 15px 30px;
     font-size: 1rem;

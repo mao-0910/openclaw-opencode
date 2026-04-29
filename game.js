@@ -12,8 +12,26 @@ const TILE_COUNT = CANVAS_SIZE / GRID_SIZE;
 const SCORE_PER_FOOD = 10;
 const GAME_SPEED = 100;
 const STORAGE_KEY = 'snakeHighScore';
+const SKIN_STORAGE_KEY = 'snakeUsedSkins';
 const INITIAL_SNAKE_LENGTH = 3;
 const INITIAL_POSITION = 10;
+
+const skinColors = {
+    classic: {
+        start: 'rgb(0, 255, 136)',
+        end: 'rgb(0, 155, 68)'
+    },
+    rainbow: {
+        start: 'rgb(255, 0, 0)',
+        end: 'rgb(0, 0, 255)'
+    },
+    neonPurple: {
+        start: 'rgb(200, 0, 255)',
+        end: 'rgb(100, 0, 200)'
+    }
+};
+
+let currentSkin = 'classic';
 
 let snake = [];
 let food = { x: INITIAL_POSITION, y: INITIAL_POSITION };
@@ -189,10 +207,17 @@ function update() {
 }
 
 function getSnakeGradientColor(index, total) {
+    const colors = skinColors[currentSkin];
     const ratio = total > 1 ? index / (total - 1) : 0;
-    const g = Math.floor(255 - ratio * 100);
-    const b = Math.floor(136 - ratio * 68);
-    return `rgb(0, ${g}, ${b})`;
+
+    const startParts = colors.start.match(/\d+/g);
+    const endParts = colors.end.match(/\d+/g);
+
+    const r = Math.floor(parseInt(startParts[0]) + ratio * (parseInt(endParts[0]) - parseInt(startParts[0])));
+    const g = Math.floor(parseInt(startParts[1]) + ratio * (parseInt(endParts[1]) - parseInt(startParts[1])));
+    const b = Math.floor(parseInt(startParts[2]) + ratio * (parseInt(endParts[2]) - parseInt(startParts[2])));
+
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 function draw() {
@@ -263,6 +288,14 @@ function gameOver() {
     gameRunning = false;
     clearInterval(gameLoop);
     gameOverFlash = 1;
+
+    try {
+        const usedSkins = JSON.parse(localStorage.getItem(SKIN_STORAGE_KEY)) || [];
+        if (!usedSkins.includes(currentSkin)) {
+            usedSkins.push(currentSkin);
+            localStorage.setItem(SKIN_STORAGE_KEY, JSON.stringify(usedSkins));
+        }
+    } catch (e) {}
 
     setTimeout(() => {
         if (score > highScore) {
@@ -413,6 +446,19 @@ document.querySelectorAll('.touch-btn').forEach(btn => {
 document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         selectMode(btn.dataset.mode);
+    });
+});
+
+function selectSkin(skin) {
+    currentSkin = skin;
+    document.querySelectorAll('.skin-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.skin === skin);
+    });
+}
+
+document.querySelectorAll('.skin-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        selectSkin(btn.dataset.skin);
     });
 });
 
