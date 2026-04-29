@@ -4,6 +4,7 @@ const scoreEl = document.getElementById('score');
 const highScoreEl = document.getElementById('highScore');
 const startBtn = document.getElementById('startBtn');
 const restartBtn = document.getElementById('restartBtn');
+const modeSelect = document.getElementById('modeSelect');
 
 const GRID_SIZE = 20;
 const CANVAS_SIZE = 400;
@@ -16,6 +17,7 @@ const INITIAL_POSITION = 10;
 
 let snake = [];
 let food = { x: INITIAL_POSITION, y: INITIAL_POSITION };
+let obstacles = [];
 let direction = { x: 0, y: 0 };
 let nextDirection = { x: 0, y: 0 };
 let score = 0;
@@ -23,6 +25,7 @@ let highScore = 0;
 let gameRunning = false;
 let gamePaused = false;
 let gameLoop = null;
+let currentMode = 'classic';
 
 let particles = [];
 let mouseX = CANVAS_SIZE / 2;
@@ -58,8 +61,8 @@ function updateParticles() {
     particles.forEach(p => {
         const dx = mouseX - p.x;
         const dy = mouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 100) {
+        const distSq = dx * dx + dy * dy;
+        if (distSq < 10000) {
             p.x -= dx * 0.02;
             p.y -= dy * 0.02;
         } else {
@@ -87,6 +90,42 @@ function drawParticles() {
     });
 }
 
+function generateObstacles() {
+    obstacles = [];
+    const count = currentMode === 'easy' ? 5 : currentMode === 'challenge' ? 10 : 0;
+    for (let i = 0; i < count; i++) {
+        let validPosition = false;
+        let attempts = 0;
+        while (!validPosition && attempts < 100) {
+            const x = Math.floor(Math.random() * TILE_COUNT);
+            const y = Math.floor(Math.random() * TILE_COUNT);
+            const isSnake = snake.some(seg => seg.x === x && seg.y === y);
+            const isFood = food.x === x && food.y === y;
+            const isObstacle = obstacles.some(o => o.x === x && o.y === y);
+            const isNearStart = x < 5 && y < 5;
+            if (!isSnake && !isFood && !isObstacle && !isNearStart) {
+                obstacles.push({ x, y });
+                validPosition = true;
+            }
+            attempts++;
+        }
+    }
+}
+
+function drawObstacles() {
+    obstacles.forEach(obs => {
+        ctx.save();
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ff4444';
+        ctx.fillStyle = '#333';
+        ctx.fillRect(obs.x * GRID_SIZE + 2, obs.y * GRID_SIZE + 2, GRID_SIZE - 4, GRID_SIZE - 4);
+        ctx.strokeStyle = '#ff4444';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(obs.x * GRID_SIZE + 2, obs.y * GRID_SIZE + 2, GRID_SIZE - 4, GRID_SIZE - 4);
+        ctx.restore();
+    });
+}
+
 function initGame() {
     snake = [];
     for (let i = 0; i < INITIAL_SNAKE_LENGTH; i++) {
@@ -97,6 +136,7 @@ function initGame() {
     score = 0;
     scoreEl.textContent = score;
     scoreBump = 0;
+    generateObstacles();
     spawnFood();
 }
 
@@ -105,7 +145,8 @@ function spawnFood() {
     while (!validPosition) {
         food.x = Math.floor(Math.random() * TILE_COUNT);
         food.y = Math.floor(Math.random() * TILE_COUNT);
-        validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y);
+        validPosition = !snake.some(segment => segment.x === food.x && segment.y === food.y) &&
+                        !obstacles.some(o => o.x === food.x && o.y === food.y);
     }
 }
 
@@ -128,6 +169,11 @@ function update() {
         return;
     }
 
+    if (obstacles.some(o => o.x === head.x && o.y === head.y)) {
+        gameOver();
+        return;
+    }
+
     snake.unshift(head);
 
     if (head.x === food.x && head.y === food.y) {
@@ -144,10 +190,9 @@ function update() {
 
 function getSnakeGradientColor(index, total) {
     const ratio = total > 1 ? index / (total - 1) : 0;
-    const r = Math.floor(0 + ratio * 0);
     const g = Math.floor(255 - ratio * 100);
     const b = Math.floor(136 - ratio * 68);
-    return `rgb(${r}, ${g}, ${b})`;
+    return `rgb(0, ${g}, ${b})`;
 }
 
 function draw() {
@@ -156,6 +201,8 @@ function draw() {
 
     updateParticles();
     drawParticles();
+
+    drawObstacles();
 
     for (let i = 0; i < snake.length; i++) {
         const segment = snake[i];
@@ -245,6 +292,8 @@ function gameOver() {
         ctx.fillText(`最终得分: ${score}`, canvas.width / 2, canvas.height / 2 + 30);
 
         restartBtn.style.display = 'inline-block';
+        document.getElementById('gameOverModal').style.display = 'flex';
+        document.getElementById('finalScore').textContent = score;
     }, 300);
 }
 
@@ -257,6 +306,11 @@ function startGame() {
     if (animationId) cancelAnimationFrame(animationId);
     draw();
     gameLoop = setInterval(update, GAME_SPEED);
+}
+
+function selectMode(mode) {
+    currentMode = mode;
+    startGame();
 }
 
 function togglePause() {
@@ -356,11 +410,23 @@ document.querySelectorAll('.touch-btn').forEach(btn => {
     });
 });
 
+document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        selectMode(btn.dataset.mode);
+    });
+});
+
 startBtn.addEventListener('click', startGame);
-restartBtn.addEventListener('click', startGame);
+restartBtn.addEventListener('click', () => {
+    document.getElementById('modeSelect').style.display = 'flex';
+    restartBtn.style.display = 'none';
+    startBtn.style.display = 'inline-block';
+});
 document.getElementById('modalRestartBtn').addEventListener('click', () => {
     document.getElementById('gameOverModal').style.display = 'none';
-    startGame();
+    document.getElementById('modeSelect').style.display = 'flex';
+    restartBtn.style.display = 'none';
+    startBtn.style.display = 'inline-block';
 });
 
 createParticles();

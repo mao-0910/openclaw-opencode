@@ -27,6 +27,23 @@
             <canvas id="gameCanvas" width="400" height="400"></canvas>
             <div class="canvas-glow"></div>
         </div>
+    <div class="mode-select" id="modeSelect">
+            <p class="mode-title">选择游戏模式</p>
+            <div class="mode-buttons">
+                <button class="mode-btn classic" data-mode="classic">
+                    经典模式
+                    <div class="mode-desc">无障碍物</div>
+                </button>
+                <button class="mode-btn easy" data-mode="easy">
+                    简单模式
+                    <div class="mode-desc">5个障碍物</div>
+                </button>
+                <button class="mode-btn challenge" data-mode="challenge">
+                    挑战模式
+                    <div class="mode-desc">10个障碍物</div>
+                </button>
+            </div>
+        </div>
         <div class="controls">
             <button id="startBtn" class="btn btn-primary">
                 <span class="btn-text">开始游戏</span>
