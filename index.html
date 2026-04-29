@@ -2,25 +2,75 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="经典的贪吃蛇网页游戏，支持键盘和触摸控制，记录最高分">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
     <title>贪吃蛇游戏</title>
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
+    <canvas id="particleCanvas"></canvas>
     <div class="game-container">
-        <h1>贪吃蛇</h1>
+        <h1 class="title">贪吃蛇</h1>
         <div class="score-board">
-            <span>得分: <span id="score">0</span></span>
-            <span>最高分: <span id="highScore">0</span></span>
+            <div class="score-item">
+                <span class="score-label">得分</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="score-divider"></div>
+            <div class="score-item">
+                <span class="score-label">最高分</span>
+                <span class="score-value" id="highScore">0</span>
+            </div>
         </div>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <div class="canvas-glow"></div>
+        </div>
         <div class="controls">
-            <button id="startBtn">开始游戏</button>
-            <button id="restartBtn" style="display: none;">重新开始</button>
+            <button id="startBtn" class="btn btn-primary">
+                <span class="btn-text">开始游戏</span>
+                <span class="btn-glow"></span>
+            </button>
+            <button id="restartBtn" class="btn btn-secondary" style="display: none;">
+                <span class="btn-text">重新开始</span>
+                <span class="btn-glow"></span>
+            </button>
+        </div>
+        <div class="touch-controls">
+            <div class="touch-row">
+                <button class="touch-btn" data-dir="up">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+                </button>
+            </div>
+            <div class="touch-row">
+                <button class="touch-btn" data-dir="left">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 12l8-8v6h8v4h-8v6z"/></svg>
+                </button>
+                <button class="touch-btn" data-dir="down">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20l8-8h-6v-8h-4v8h-6z"/></svg>
+                </button>
+                <button class="touch-btn" data-dir="right">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 12l-8 8v-6h-8v-4h8v-6z"/></svg>
+                </button>
+            </div>
         </div>
         <div class="instructions">
             <p>使用方向键 ↑ ↓ ← → 控制蛇的移动</p>
             <p>按 空格键 暂停/继续</p>
+        </div>
+    </div>
+    <div id="gameOverModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 class="modal-title">游戏结束</h2>
+            <div class="modal-score">
+                <span class="modal-score-label">最终得分</span>
+                <span class="modal-score-value" id="finalScore">0</span>
+            </div>
+            <button id="modalRestartBtn" class="btn btn-primary">
+                <span class="btn-text">再来一局</span>
+                <span class="btn-glow"></span>
+            </button>
         </div>
     </div>
     <script src="game.js"></script>
