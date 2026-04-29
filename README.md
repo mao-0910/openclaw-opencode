@@ -1,4 +1,4 @@
-# 使用 OpenClaw + OpenCode + GitHub 创建自动化代码项目
+# 使用 OpenClaw + OpenCode + GitHub 从零开发自动化代码项目
 
 > 通过自然语言描述，让 AI 自动编写代码并上传至 GitHub，以贪吃蛇游戏为例完整演示从零开发部署的全流程。
 
@@ -6,7 +6,7 @@
 
 ## 🎯 项目简介
 
-本教程展示如何通过 **OpenClaw** 调度 **OpenCode** 编程智能体，用自然语言描述需求即可完成代码编写，并自动推送到 GitHub 仓库。无需手动敲代码，小白也能快速上手！
+本教程展示如何通过 **OpenClaw** 调度 **OpenCode** 编程智能体，用自然语言描述需求即可完成代码编写，并自动推送到 GitHub 仓库。**无需手动敲代码**，小白也能快速上手！
 
 **技术栈：**
 - OpenClaw — AI 调度中枢，自然语言任务分发
@@ -28,50 +28,119 @@
 
 ## 🚀 从零开发贪吃蛇游戏
 
-### 第一步：克隆项目模板
+以下是**真实开发过程**，完整记录每一步操作：
+
+### 第一步：创建工作目录
 
 ```bash
-git clone https://github.com/mao-0910/openclaw-opencode.git
-cd openclaw-opencode
+mkdir -p myopencode
+cd myopencode
 ```
 
-### 第二步：自然语言描述需求
-
-在 OpenClaw 中发送指令：
+### 第二步：启动 OpenCode 并初始化
 
 ```
-使用 opencode，开发一个贪吃蛇游戏，要求：
-1. 现代化 UI - 精致设计、渐变、阴影、圆角
-2. 增加视觉效果 - 粒子特效、动画、光晕
-3. 支持键盘和触摸控制
-4. 记录最高分到 LocalStorage
+帮我切换到myopencode这个目录，然后启动opencode
 ```
 
-### 第三步：OpenCode 自动生成代码
+OpenCode 自动初始化环境：
+- ✅ 创建 `memory/` 目录
+- ✅ 创建 `MEMORY.md`（长期记忆）
+- ✅ 创建 `memory/2026-04-24.md`（今日记录）
+
+### 第三步：自然语言描述开发需求
+
+```
+在opencode中帮我开发一个贪吃蛇的游戏
+```
+
+### 第四步：OpenCode 自动生成代码
 
 OpenCode 会自动读取需求，生成三个文件：
 
 | 文件 | 职责 |
 |------|------|
 | `index.html` | 游戏主页面 + Canvas 画布 |
-| `game.css` | 现代化样式（渐变、玻璃拟态、动画） |
-| `game.js` | 游戏逻辑（移动、碰撞、得分系统） |
+| `game.css` | 样式文件（霓虹风格） |
+| `game.js` | 游戏逻辑 |
 
-### 第四步：推送代码到 GitHub
+### 第五步：推送代码到 GitHub
 
-配置 Git 用户信息并提交：
+**配置 Git 用户信息：**
 
 ```bash
-git config user.email "your@email.com"
-git config user.name "your-username"
-git add -A
+git config user.email "1723634231@qq.com"
+git config user.name "美羊羊mao-0910"
+```
+
+**初始化 Git 并提交：**
+
+```bash
+git init
+git add index.html game.css game.js
 git commit -m "feat: 贪吃蛇游戏 v1.0"
 ```
 
-使用 Token 推送：
+**使用 Token 推送：**
 
 ```bash
-git push https://<YOUR_TOKEN>@github.com/mao-0910/openclaw-opencode.git main
+git remote add origin https://<TOKEN>@github.com/mao-0910/openclaw-opencode.git
+git push -u origin main
+```
+
+---
+
+## 📊 完整流程图
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        开始                                      │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  1. 创建工作目录                                                │
+│     mkdir -p myopencode && cd myopencode                        │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  2. 启动 OpenCode                                               │
+│     opencode run "初始化环境"                                    │
+│     └── 自动创建 memory/、MEMORY.md、memory/2026-04-24.md        │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  3. 描述开发需求                                                │
+│     "在opencode中帮我开发一个贪吃蛇的游戏"                        │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  4. OpenCode 自动生成代码                                       │
+│     ├── index.html  ← 游戏主页面                                │
+│     ├── game.css    ← 样式文件                                  │
+│     └── game.js     ← 游戏逻辑                                  │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  5. 初始化 Git 并提交                                          │
+│     git init && git add . && git commit -m "feat: 贪吃蛇游戏"   │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  6. 配置 GitHub Token 推送                                       │
+│     git remote add origin https://<TOKEN>@github.com/user/repo  │
+│     git push -u origin main                                    │
+└─────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  ✅ 完成！访问 https://github.com/mao-0910/openclaw-opencode   │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -85,7 +154,7 @@ git push https://<YOUR_TOKEN>@github.com/mao-0910/openclaw-opencode.git main
 - ⏸️ 空格键暂停 / 继续
 - 🏆 最高分自动保存到 LocalStorage
 
-### 视觉效果
+### 视觉效果（后续优化版本）
 - ✨ 动态粒子背景（鼠标交互）
 - 🌟 蛇身发光 + 渐变色（头亮尾暗）
 - 💓 食物脉动闪烁动画
@@ -94,6 +163,25 @@ git push https://<YOUR_TOKEN>@github.com/mao-0910/openclaw-opencode.git main
 - 🔮 玻璃拟态（Glassmorphism）UI
 - 🎬 入场动画与悬停动效
 - 📱 响应式设计，完美适配移动端
+
+---
+
+## 🔐 GitHub Token 配置教程
+
+### 生成 Token
+
+1. 访问 https://github.com/settings/tokens
+2. → **Developer settings** → **Personal access tokens** → **Generate new token (classic)**
+3. 勾选 **`repo`** 权限
+4. 设置过期时间（建议 90 天）
+5. 点击 **Generate token** 并复制保存
+
+### 使用 Token 推送
+
+```bash
+git remote set-url origin https://<TOKEN>@github.com/user/repo.git
+git push
+```
 
 ---
 
@@ -142,34 +230,6 @@ ctx.shadowBlur = 15 + Math.sin(foodPulse) * 5;
 
 ---
 
-## 🔐 GitHub Token 配置教程
-
-### 生成 Token
-
-1. 访问 https://github.com/settings/tokens
-2. → **Developer settings** → **Personal access tokens** → **Generate new token (classic)**
-3. 勾选 **`repo`** 权限
-4. 设置过期时间（建议 90 天）
-5. 点击 **Generate token** 并复制保存
-
-### 使用 Token 推送
-
-两种方式：
-
-**方式一：远程 URL 携带 Token**
-```bash
-git remote add origin https://<TOKEN>@github.com/user/repo.git
-git push -u origin main
-```
-
-**方式二：修改远程 URL**
-```bash
-git remote set-url origin https://<TOKEN>@github.com/user/repo.git
-git push
-```
-
----
-
 ## 📂 项目结构
 
 ```
@@ -183,19 +243,7 @@ openclaw-opencode/
 
 ---
 
-## 🎨 效果预览
-
-| 功能 | 展示 |
-|------|------|
-| 粒子背景 | 鼠标靠近时粒子被排斥 |
-| 蛇身发光 | Canvas shadowBlur 头部 20 |
-| 食物闪烁 | 正弦脉动动画 |
-| 得分反馈 | 数字放大 + 光晕 |
-| 游戏结束 | Modal 弹窗 + 闪光 |
-
----
-
-## 💡 核心优势
+## 💡 核心优势对比
 
 | 传统方式 | OpenClaw + OpenCode |
 |----------|---------------------|
@@ -210,11 +258,11 @@ openclaw-opencode/
 ## 🎉 结语
 
 通过 **OpenClaw** 调度 **OpenCode**，只需用自然语言描述需求：
-- 一句话开发游戏原型
-- 一句话优化视觉效果
-- 一句话推送 GitHub
+- ✅ 一句话开发游戏原型
+- ✅ 一句话优化视觉效果
+- ✅ 一句话推送 GitHub
 
-从想法到上线，全程无需手动敲代码！
+**全程无需手动敲代码！**
 
 📖 **在线体验：** 打开 `index.html` 即可在浏览器中运行贪吃蛇游戏
 
