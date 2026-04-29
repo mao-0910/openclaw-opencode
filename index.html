@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="经典的贪吃蛇网页游戏，支持键盘和触摸控制，记录最高分">
+    <meta name="description" content="贪吃蛇游戏 - 经典网页游戏，支持键盘和触摸控制，记录最高分，提供经典/简单/挑战三种模式">
+    <meta name="keywords" content="贪吃蛇, 游戏, 网页游戏, HTML5, JavaScript">
+    <meta name="author" content="OpenClaw + OpenCode">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
     <title>贪吃蛇游戏</title>
     <link rel="stylesheet" href="game.css">
 </head>
 <body>
     <canvas id="particleCanvas"></canvas>
-    <div class="game-container">
+    <main class="game-container">
         <h1 class="title">贪吃蛇</h1>
         <div class="score-board">
             <div class="score-item">
@@ -27,7 +29,7 @@
             <canvas id="gameCanvas" width="400" height="400"></canvas>
             <div class="canvas-glow"></div>
         </div>
-    <div class="mode-select" id="modeSelect">
+        <div class="mode-select" id="modeSelect">
             <p class="mode-title">选择游戏模式</p>
             <div class="mode-buttons">
                 <button class="mode-btn classic" data-mode="classic">
@@ -57,7 +59,7 @@
                 <span class="btn-text">开始游戏</span>
                 <span class="btn-glow"></span>
             </button>
-            <button id="restartBtn" class="btn btn-secondary" style="display: none;">
+            <button id="restartBtn" class="btn btn-secondary hidden">
                 <span class="btn-text">重新开始</span>
                 <span class="btn-glow"></span>
             </button>
@@ -84,8 +86,8 @@
             <p>使用方向键 ↑ ↓ ← → 控制蛇的移动</p>
             <p>按 空格键 暂停/继续</p>
         </div>
-    </div>
-    <div id="gameOverModal" class="modal" style="display: none;">
+    </main>
+    <div id="gameOverModal" class="modal hidden">
         <div class="modal-content">
             <h2 class="modal-title">游戏结束</h2>
             <div class="modal-score">

@@ -528,6 +528,11 @@ body {
     margin-top: 5px;
 }
 
+/* === Hidden Utility === */
+.hidden {
+    display: none !important;
+}
+
 /* === Responsive === */
 @media (max-width: 480px) {
     .title {
