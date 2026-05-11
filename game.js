@@ -11,6 +11,18 @@
     const STORAGE_KEY = 'snakeHighScore';
     const SKIN_STORAGE_KEY = 'snakeUsedSkins';
 
+    // === I18N (国际化文案) ===
+    const I18N = {
+        zh: {
+            gameOver: '游戏结束',
+            finalScore: '最终得分: ',
+            paused: '暂停'
+        },
+        get() {
+            return this.zh; // 当前仅支持中文，可扩展 en/jp 等
+        }
+    };
+
     // === Skin Colors ===
     const skinColors = {
         classic: { start: [0, 255, 136], end: [0, 155, 68] },
@@ -343,12 +355,12 @@
                 this.ctx.fillStyle = '#ff4444';
                 this.ctx.font = 'bold 40px Segoe UI';
                 this.ctx.textAlign = 'center';
-                this.ctx.fillText('游戏结束', this.canvas.width / 2, this.canvas.height / 2 - 20);
+                this.ctx.fillText(`${I18N.get().gameOver}`, this.canvas.width / 2, this.canvas.height / 2 - 20);
                 this.ctx.restore();
 
                 this.ctx.fillStyle = '#fff';
                 this.ctx.font = '24px Segoe UI';
-                this.ctx.fillText(`最终得分: ${this.score}`, this.canvas.width / 2, this.canvas.height / 2 + 30);
+                this.ctx.fillText(`${I18N.get().finalScore}${this.score}`, this.canvas.width / 2, this.canvas.height / 2 + 30);
 
                 this.restartBtn.style.display = 'inline-block';
                 this.restartBtn.classList.remove('hidden');
@@ -377,7 +389,7 @@
                 this.ctx.fillStyle = '#fff';
                 this.ctx.font = 'bold 30px Segoe UI';
                 this.ctx.textAlign = 'center';
-                this.ctx.fillText('暂停', this.canvas.width / 2, this.canvas.height / 2);
+                this.ctx.fillText(I18N.get().paused, this.canvas.width / 2, this.canvas.height / 2);
             } else {
                 this.lastTime = performance.now();
                 this.draw();
