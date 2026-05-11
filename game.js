@@ -39,6 +39,10 @@
             this.highScoreEl = document.getElementById('highScore');
             this.startBtn = document.getElementById('startBtn');
             this.restartBtn = document.getElementById('restartBtn');
+            this.gameOverModal = document.getElementById('gameOverModal');
+            this.finalScoreEl = document.getElementById('finalScore');
+            this.modeSelect = document.getElementById('modeSelect');
+            this.modalRestartBtn = document.getElementById('modalRestartBtn');
 
             this.snake = [];
             this.food = { x: INITIAL_POSITION, y: INITIAL_POSITION };
@@ -364,8 +368,8 @@
 
                 this.restartBtn.style.display = 'inline-block';
                 this.restartBtn.classList.remove('hidden');
-                document.getElementById('gameOverModal').style.display = 'flex';
-                document.getElementById('finalScore').textContent = this.score;
+                this.gameOverModal.style.display = 'flex';
+                this.finalScoreEl.textContent = this.score;
             }, 300);
         }
 
@@ -497,13 +501,13 @@
 
             this.startBtn.addEventListener('click', () => this.start());
             this.restartBtn.addEventListener('click', () => {
-                document.getElementById('modeSelect').style.display = 'flex';
+                this.modeSelect.style.display = 'flex';
                 this.restartBtn.style.display = 'none';
                 this.startBtn.style.display = 'inline-block';
             });
-            document.getElementById('modalRestartBtn').addEventListener('click', () => {
-                document.getElementById('gameOverModal').style.display = 'none';
-                document.getElementById('modeSelect').style.display = 'flex';
+            this.modalRestartBtn.addEventListener('click', () => {
+                this.gameOverModal.style.display = 'none';
+                this.modeSelect.style.display = 'flex';
                 this.restartBtn.style.display = 'none';
                 this.startBtn.style.display = 'inline-block';
             });
